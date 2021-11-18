@@ -22,6 +22,7 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <pcl/visualization/cloud_viewer.h>
 #include <pcl/common/projection_matrix.h>
+#include <pcl/io/ply_io.h>
 #include "Converter.h"
 
 #include <boost/make_shared.hpp>
@@ -41,6 +42,7 @@ void PointCloudMapping::shutdown()
         unique_lock<mutex> lck(shutDownMutex);
         shutDownFlag = true;
         keyFrameUpdated.notify_one();
+        pcl::io::savePLYFileBinary("pointcloud-map.ply", *globalMap);
     }
     viewerThread->join();
 }
